@@ -1,2 +1,5 @@
+from rest_framework.exceptions import PermissionDenied
+
 def has_permission(provider_user, user):
-    return provider_user == user or user.is_superuser
+    if provider_user != user and not user.is_superuser:
+            raise PermissionDenied()

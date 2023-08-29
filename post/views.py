@@ -47,27 +47,21 @@ class PostDetailProv(APIView):
     def get(self, request, id):
         post = get_object_or_404(Post, id=id)
         user = self.request.user
-        self.has_permission(post.user, user)
+        has_permission(post.user, user)
         serializer = PostSerializer(post)
         return Response(serializer.data)
 
     def put(self, request, id):
         post = get_object_or_404(Post, id=id)
         user= self.request.user
-        if has_permission(post.user, user):
-            serializer = PostSerializer(post, data=request.data)
-            if serializer.is_valid():
-                serializer.save()
-                return Response(serializer.data)
-            else:
-                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        has_permission(post.user, user)
+        serializer = PostSerializer(post, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
         else:
-            return Response({'error': 'Access denied'}, status=status.HTTP_403_FORBIDDEN)
-        
-    def has_permission(self, provider_user, user):
-        if provider_user != user and not user.is_superuser:
-            raise PermissionDenied()
-
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+       
 
 class PostDeleteProv(DestroyAPIView):  
     permission_classes = (IsAuthenticated,)
