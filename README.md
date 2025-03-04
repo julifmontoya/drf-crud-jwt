@@ -1,6 +1,6 @@
 
 ## 1. Project Goals
-The purpose of this project is to create a Django Rest Framework API
+The purpose of this project is to create a Modular Monolithic Django Rest Framework API
 
 ## 2. Technologies I've used
 - Python was used to write the functions and models as needed by the business logic.
